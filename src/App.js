@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Notification from './components/Notification';
+import Profile from './components/Profile';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const [notifications, setNotifications] = useState([]);
+
+    const handleAnswerNotification = () => {
+        setNotifications(notifications => [
+            ...notifications,
+            {
+                title: 'Someone answered your question',
+                body: 'Check out the new answer!',
+                backgroundColor: 'green',
+            },
+        ]);
+    };
+
+    const handleUpvoteNotification = () => {
+        setNotifications(notifications => [
+            ...notifications,
+            {
+                title: 'Someone upvoted your question/answer',
+                body: 'Your question/answer received an upvote!',
+                backgroundColor: 'yellow',
+            },
+        ]);
+    };
+
+    return (
+        <div className="App">
+            <Profile /><br/>
+            <center>
+            <button onClick={handleAnswerNotification}>Trigger Answer Notification</button>
+            <button onClick={handleUpvoteNotification}>Trigger Upvote Notification</button>
+            </center>
+            {notifications.map((notification, index) => (
+                <Notification
+                    key={index}
+                    title={notification.title}
+                    body={notification.body}
+                    backgroundColor={notification.backgroundColor}
+                />
+            ))}
+        </div>
+    );
+};
 
 export default App;
